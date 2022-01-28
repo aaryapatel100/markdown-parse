@@ -30,7 +30,7 @@ If it does we don't include it in our output if it doesn't we add it to our arra
 Test Case 3 returns an incorrect password 
 */
 
-public class MarkdownParse {
+public class MarkdownParse1 {
     static String[] imageExtensions = {".png", ".jpeg", ".gif", ".csv", ".jpg", ".svg", ".pdf"};
 
     public static ArrayList<String> getLinks(String markdown) {
