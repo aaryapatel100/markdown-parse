@@ -19,7 +19,16 @@ int closeParen = 0;
 inside while loop we could just check if the nextCloseBracket > openParen we just break. 
 */  
 
+/* Test Case 2
+Test Case 2 is failing because it is returning an incorrect output
+Although it has the correct syntax for a link, we are referencing an image with a .png extension which shouldn't be included in our output
+Maybe we can create an array that contains all possible image extensions. Iterate through the array checking if our "link substring" contains one of those extensions.
+If it does we don't include it in our output if it doesn't we add it to our array list
+*/
+
 public class MarkdownParse {
+    static String[] imageExtensions = {".png", ".jpeg", ".gif", ".csv", ".jpg", ".svg", ".pdf"};
+
     public static ArrayList<String> getLinks(String markdown) {
         ArrayList<String> toReturn = new ArrayList<>();
         // find the next [, then find the ], then find the (, then take up to
@@ -35,11 +44,25 @@ public class MarkdownParse {
             nextCloseBracket = markdown.indexOf("]", nextOpenBracket);
             openParen = markdown.indexOf("(", nextCloseBracket);
             closeParen = markdown.indexOf(")", openParen);
-            toReturn.add(markdown.substring(openParen + 1, closeParen));
+
+            if (!checkExtension(markdown.substring(openParen +1, closeParen)))
+            {
+                toReturn.add(markdown.substring(openParen + 1, closeParen));
+            }
             currentIndex = closeParen + 1;
         }
         return toReturn;
     }
+
+    public static boolean checkExtension(String substring) {
+        for (int i = 0; i < imageExtensions.length; ++i) {
+            if (substring.contains(imageExtensions[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     public static void main(String[] args) throws IOException {
 		Path fileName = Path.of(args[0]);
 	    String contents = Files.readString(fileName);
