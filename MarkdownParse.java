@@ -4,8 +4,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
-// import com.apple.laf.AquaButtonCheckBoxUI.CheckBoxButtonBorder;
-
 /* Test Case 1
 Test Case is failing due to incorrect order of brackets and parenthesis.
 Opening and closing brackets should always come before open/closing parenthesis
