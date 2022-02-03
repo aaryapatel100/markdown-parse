@@ -4,6 +4,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
+// import com.apple.laf.AquaButtonCheckBoxUI.CheckBoxButtonBorder;
+
 /* Test Case 1
 Test Case is failing due to incorrect order of brackets and parenthesis.
 Opening and closing brackets should always come before open/closing parenthesis
@@ -30,6 +32,10 @@ If it does we don't include it in our output if it doesn't we add it to our arra
 Test Case 3 returns an incorrect password 
 */
 
+/* Test Case 4
+Test case 4 includes an invalid link
+*/
+
 public class MarkdownParse {
     static String[] imageExtensions = {".png", ".jpeg", ".gif", ".csv", ".jpg", ".svg", ".pdf"};
 
@@ -37,21 +43,36 @@ public class MarkdownParse {
         ArrayList<String> toReturn = new ArrayList<>();
         // find the next [, then find the ], then find the (, then take up to
         // the next )
+        //  if(!(markdown.indexOf("[") < markdown.indexOf("]") && markdown.indexOf("]")< markdown.indexOf("(") && markdown.indexOf("(") < markdown.indexOf(")"))){ very clean code 100% (LOL)
         int currentIndex = 0;
         int nextOpenBracket = 0;
         int nextCloseBracket = markdown.indexOf("]");
         int openParen = markdown.indexOf("(");
         int closeParen = 0;
         while(currentIndex < markdown.length()) {
+            // Fix for tests 2 and 8
+            int prevIndex = currentIndex;
+            int prevOpenBracket = nextOpenBracket;
+            int prevCloseBracket = nextCloseBracket;
+            int prevOpenParen = openParen;
+            int prevCloseParen = closeParen;
+
             if (nextCloseBracket > openParen) break;
             nextOpenBracket = markdown.indexOf("[", currentIndex);
             nextCloseBracket = markdown.indexOf("]", nextOpenBracket);
             openParen = markdown.indexOf("(", nextCloseBracket);
             closeParen = markdown.indexOf(")", openParen);
 
+            // Fix for tests 2 and 8
+            if(nextOpenBracket == -1 || nextCloseBracket == -1 || 
+            openParen < prevOpenParen || closeParen < prevCloseParen){
+                break;
+            }
+
             if (!checkExtension(markdown.substring(openParen +1, closeParen)) && openParen-nextCloseBracket==1)
             {
-                toReturn.add(markdown.substring(openParen + 1, closeParen));
+                if(markdown.substring(openParen + 1, closeParen).indexOf(".")!=-1)
+                    toReturn.add(markdown.substring(openParen + 1, closeParen));
             }
             currentIndex = closeParen + 1;
         }
